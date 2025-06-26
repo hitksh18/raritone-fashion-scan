@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Product } from '@/lib/product';
 
 interface ProductCardProps {
@@ -8,11 +9,17 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/product/${product.id}`);
+  };
+
   return (
     <motion.div
       whileHover={{ y: -5 }}
       className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-      onClick={() => window.location.href = `/product/${product.id}`}
+      onClick={handleClick}
     >
       <div className="aspect-[3/4] overflow-hidden">
         <img

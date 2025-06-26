@@ -4,7 +4,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ShoppingBag, User, Menu, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import LoginModal from '@/components/LoginModal';
 
 interface NavbarProps {
   onSearchOpen: () => void;
@@ -14,6 +16,8 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const navigate = useNavigate();
   const { user, cart } = useAuth();
 
   useEffect(() => {
@@ -26,6 +30,14 @@ const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
   }, []);
 
   const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
+
+  const handleProfileClick = () => {
+    if (user) {
+      navigate('/profile');
+    } else {
+      setIsLoginModalOpen(true);
+    }
+  };
 
   return (
     <>
@@ -62,14 +74,15 @@ const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
                 alt="RARITONE"
                 width={120}
                 height={40}
-                className="h-8 w-auto"
+                className="h-8 w-auto cursor-pointer"
+                onClick={() => navigate('/')}
               />
             </div>
 
             {/* Right - Icons */}
             <div className="flex items-center space-x-6">
               <button
-                onClick={onCartOpen}
+                onClick={() => navigate('/cart')}
                 className="relative text-gray-900 hover:text-gray-600 transition-colors"
               >
                 <ShoppingBag size={20} />
@@ -87,7 +100,10 @@ const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
                 <Search size={20} />
               </button>
               
-              <button className="text-gray-900 hover:text-gray-600 transition-colors">
+              <button 
+                onClick={handleProfileClick}
+                className="text-gray-900 hover:text-gray-600 transition-colors"
+              >
                 <User size={20} />
               </button>
             </div>
@@ -111,9 +127,12 @@ const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1, duration: 0.5 }}
               >
-                <a href="/shop" className="text-4xl font-light text-gray-900 hover:text-gray-600 transition-colors">
+                <button 
+                  onClick={() => { navigate('/catalog'); setIsMenuOpen(false); }}
+                  className="text-4xl font-light text-gray-900 hover:text-gray-600 transition-colors"
+                >
                   Shop
-                </a>
+                </button>
               </motion.div>
               
               <motion.div
@@ -121,9 +140,12 @@ const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
               >
-                <a href="/scan" className="text-4xl font-light text-gray-900 hover:text-gray-600 transition-colors">
+                <button 
+                  onClick={() => { navigate('/scan'); setIsMenuOpen(false); }}
+                  className="text-4xl font-light text-gray-900 hover:text-gray-600 transition-colors"
+                >
                   Body Scan
-                </a>
+                </button>
               </motion.div>
               
               <motion.div
@@ -131,9 +153,12 @@ const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
-                <a href="/profile" className="text-4xl font-light text-gray-900 hover:text-gray-600 transition-colors">
+                <button 
+                  onClick={() => { handleProfileClick(); setIsMenuOpen(false); }}
+                  className="text-4xl font-light text-gray-900 hover:text-gray-600 transition-colors"
+                >
                   Profile
-                </a>
+                </button>
               </motion.div>
               
               <motion.div
@@ -149,6 +174,12 @@ const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </>
   );
 };

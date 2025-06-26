@@ -144,7 +144,7 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
                           />
                         </div>
                         <h4 className="font-medium text-sm">{product.name}</h4>
-                        <p className="text-gray-600 text-sm">${product.price}</p>
+                        <p className="text-gray-600 text-sm">₹{product.price}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -190,7 +190,7 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
                           />
                         </div>
                         <h4 className="font-medium text-sm">{product.name}</h4>
-                        <p className="text-gray-600 text-sm">${product.price}</p>
+                        <p className="text-gray-600 text-sm">₹{product.price}</p>
                       </motion.div>
                     ))}
                   </div>

@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import SearchOverlay from '@/components/SearchOverlay';
 import ChatWidget from '@/components/ChatWidget';
@@ -10,6 +11,7 @@ import ChatWidget from '@/components/ChatWidget';
 const Index = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const navigate = useNavigate();
   const { scrollY } = useScroll();
   
   const logoY = useTransform(scrollY, [0, 300], [0, -100]);
@@ -73,7 +75,7 @@ const Index = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-white text-black px-8 py-3 font-medium hover:bg-gray-100 transition-colors"
-              onClick={() => window.location.href = '/scan'}
+              onClick={() => navigate('/scan')}
             >
               Start Body Scan
             </motion.button>
@@ -82,7 +84,7 @@ const Index = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="border border-white text-white px-8 py-3 font-medium hover:bg-white hover:text-black transition-colors"
-              onClick={() => window.location.href = '/shop'}
+              onClick={() => navigate('/catalog')}
             >
               Browse Collection
             </motion.button>
@@ -141,6 +143,7 @@ const Index = () => {
                 transition={{ delay: index * 0.2, duration: 0.8 }}
                 viewport={{ once: true }}
                 className="group cursor-pointer"
+                onClick={() => navigate('/catalog')}
               >
                 <div className="aspect-[3/4] relative overflow-hidden mb-4">
                   <img
@@ -150,7 +153,7 @@ const Index = () => {
                   />
                 </div>
                 <h3 className="text-lg font-medium mb-2">New Collection {item}</h3>
-                <p className="text-gray-600 text-sm">From $299</p>
+                <p className="text-gray-600 text-sm">From ₹2,999</p>
               </motion.div>
             ))}
           </div>

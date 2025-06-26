@@ -3,7 +3,6 @@
 
 import React, { useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import SearchOverlay from '@/components/SearchOverlay';
 import ChatWidget from '@/components/ChatWidget';
@@ -28,12 +27,10 @@ const Index = () => {
       <div className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          <Image
+          <img
             src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
             alt="Luxury Fashion Background"
-            fill
-            className="object-cover"
-            priority
+            className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>
@@ -48,7 +45,7 @@ const Index = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
-            <Image
+            <img
               src="/lovable-uploads/2a9db097-46df-4a0b-af29-359a1298bdf2.png"
               alt="RARITONE"
               width={300}
@@ -146,11 +143,10 @@ const Index = () => {
                 className="group cursor-pointer"
               >
                 <div className="aspect-[3/4] relative overflow-hidden mb-4">
-                  <Image
+                  <img
                     src={`https://images.unsplash.com/photo-158109122682${index + 5}-a6a2a5aee158`}
                     alt={`Collection ${item}`}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
                 <h3 className="text-lg font-medium mb-2">New Collection {item}</h3>

@@ -1,7 +1,16 @@
 
 import { db } from './firebase';
-import { doc, setDoc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { doc, setDoc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { User } from 'firebase/auth';
+
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  size?: string;
+  imageURL: string;
+}
 
 export interface UserData {
   name: string;
@@ -18,20 +27,10 @@ export interface UserData {
   isAdmin: boolean;
 }
 
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  imageURL: string;
-  size?: string;
-  quantity: number;
-  category: string;
-}
-
 export const createUserDoc = async (user: User) => {
   const userRef = doc(db, 'users', user.uid);
   const userSnap = await getDoc(userRef);
-  
+
   if (!userSnap.exists()) {
     const userData: UserData = {
       name: user.displayName || '',
@@ -42,66 +41,65 @@ export const createUserDoc = async (user: User) => {
       createdAt: new Date(),
       isAdmin: false
     };
-    
+
     await setDoc(userRef, userData);
   }
-  
-  return userSnap.data();
 };
 
 export const getUserCart = async (uid: string): Promise<CartItem[]> => {
   const userRef = doc(db, 'users', uid);
   const userSnap = await getDoc(userRef);
-  
+
   if (userSnap.exists()) {
-    return userSnap.data().cart || [];
+    const userData = userSnap.data() as UserData;
+    return userData.cart || [];
   }
-  
+
   return [];
 };
 
 export const addToCart = async (uid: string, item: CartItem) => {
   const userRef = doc(db, 'users', uid);
   const userSnap = await getDoc(userRef);
-  
+
   if (userSnap.exists()) {
-    const currentCart = userSnap.data().cart || [];
-    const existingItemIndex = currentCart.findIndex((cartItem: CartItem) => 
-      cartItem.id === item.id && cartItem.size === item.size
-    );
-    
+    const userData = userSnap.data() as UserData;
+    const existingItemIndex = userData.cart.findIndex(cartItem => cartItem.id === item.id && cartItem.size === item.size);
+
     if (existingItemIndex > -1) {
-      currentCart[existingItemIndex].quantity += item.quantity;
+      userData.cart[existingItemIndex].quantity += item.quantity;
     } else {
-      currentCart.push(item);
+      userData.cart.push(item);
     }
-    
-    await updateDoc(userRef, { cart: currentCart });
+
+    await updateDoc(userRef, { cart: userData.cart });
   }
 };
 
 export const removeFromCart = async (uid: string, productId: string, size?: string) => {
   const userRef = doc(db, 'users', uid);
   const userSnap = await getDoc(userRef);
-  
+
   if (userSnap.exists()) {
-    const currentCart = userSnap.data().cart || [];
-    const updatedCart = currentCart.filter((item: CartItem) => 
-      !(item.id === productId && item.size === size)
-    );
+    const userData = userSnap.data() as UserData;
+    userData.cart = userData.cart.filter(item => !(item.id === productId && item.size === size));
     
-    await updateDoc(userRef, { cart: updatedCart });
+    await updateDoc(userRef, { cart: userData.cart });
   }
 };
 
-export const updateUserScanData = async (uid: string, data: { height?: number; weight?: number; imageURL?: string }) => {
+export const addRecentSearch = async (uid: string, searchQuery: string) => {
   const userRef = doc(db, 'users', uid);
-  await updateDoc(userRef, { scannedData: data });
+  
+  await updateDoc(userRef, {
+    recentSearches: arrayUnion(searchQuery)
+  });
 };
 
-export const addRecentSearch = async (uid: string, searchTerm: string) => {
+export const updateUserScanData = async (uid: string, scanData: { height?: number; weight?: number; imageURL?: string }) => {
   const userRef = doc(db, 'users', uid);
+  
   await updateDoc(userRef, {
-    recentSearches: arrayUnion(searchTerm)
+    scannedData: scanData
   });
 };

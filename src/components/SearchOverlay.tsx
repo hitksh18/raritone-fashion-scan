@@ -7,7 +7,6 @@ import { X, Search } from 'lucide-react';
 import { searchProducts, getLatestProducts, Product } from '@/lib/product';
 import { useAuth } from '@/contexts/AuthContext';
 import { addRecentSearch } from '@/lib/user';
-import Image from 'next/image';
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -138,11 +137,10 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
                         onClick={() => handleProductClick(product)}
                       >
                         <div className="aspect-square relative mb-2 overflow-hidden rounded-lg">
-                          <Image
+                          <img
                             src={product.imageURL}
                             alt={product.name}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                         <h4 className="font-medium text-sm">{product.name}</h4>
@@ -185,11 +183,10 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
                         onClick={() => handleProductClick(product)}
                       >
                         <div className="aspect-square relative mb-2 overflow-hidden rounded-lg">
-                          <Image
+                          <img
                             src={product.imageURL}
                             alt={product.name}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                         <h4 className="font-medium text-sm">{product.name}</h4>

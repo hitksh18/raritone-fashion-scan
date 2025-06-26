@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, ChevronDown, Send } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { sendMessage, fetchMessages, sendGuestMessage, ChatMessage } from '@/lib/chat';
-import Image from 'next/image';
 
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

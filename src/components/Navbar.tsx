@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ShoppingBag, User, Menu, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import Image from 'next/image';
 
 interface NavbarProps {
   onSearchOpen: () => void;
@@ -58,7 +57,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSearchOpen, onCartOpen }) => {
 
             {/* Center - Logo */}
             <div className="flex-1 flex justify-center">
-              <Image
+              <img
                 src="/lovable-uploads/2a9db097-46df-4a0b-af29-359a1298bdf2.png"
                 alt="RARITONE"
                 width={120}
